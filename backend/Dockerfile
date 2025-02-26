@@ -7,18 +7,14 @@ WORKDIR /app
 # Install required dependencies
 RUN apt-get update && apt-get install -y g++-12 build-essential libstdc++-12-dev
 
-# Copy all files from the build context to the container
+# Copy backend files into the container
 COPY . .
-
-# Move into the backend folder (if applicable)
-WORKDIR /app/backend
 
 # Install dependencies
 RUN npm install
 
-# Expose port 5000
-EXPOSE 5000
+# Expose the port your server runs on
+EXPOSE 5000  # Change if your app uses a different port
 
-# Start the server
-CMD ["node", "backend/server.js"]
-
+# Start the Node.js server
+CMD ["node", "server.js"]
