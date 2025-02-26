@@ -18,3 +18,5 @@ EXPOSE 5000
 
 # Start the server
 CMD ["node", "server.js"]
+
+# Onrender -> Dockerfile Path :- backend/Dockerfile , Docker Build Context Directory :- .
