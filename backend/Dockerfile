@@ -1,28 +1,20 @@
-# Use Node.js 18 with Debian Bullseye as the base image
-FROM node:18-bullseye
+# Use Node.js 18 as the base image
+FROM node:18
 
 # Set working directory inside the container
 WORKDIR /app
 
-# Update and install required dependencies
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    g++ gcc libstdc++-dev
+# Install required dependencies
+RUN apt-get update && apt-get install -y g++-12 build-essential libstdc++-12-dev
 
-# Copy package.json and package-lock.json first (for better caching)
-COPY backend/package*.json ./
+# Copy backend folder into the container
+COPY backend /app/
 
 # Install dependencies
 RUN npm install
 
-# Copy the rest of the backend files
-COPY backend/ ./
+# Expose port 5000
+EXPOSE 5000
 
-# Ensure the /app/temp directory exists for compiled files
-RUN mkdir -p /app/temp
-
-# Expose the port your server runs on
-EXPOSE 5000  
-
-# Start the Node.js server
+# Start the server
 CMD ["node", "server.js"]
