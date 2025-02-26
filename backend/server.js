@@ -47,18 +47,25 @@ const languageConfigs = {
 // Utility function to execute a command
 const executeCommand = (command, input = "") =>
   new Promise((resolve, reject) => {
+    console.log(`Executing: ${command}`); // ✅ Log command execution
     const process = exec(
       command,
       { timeout: 5000 },
       (error, stdout, stderr) => {
+        console.log("STDOUT:", stdout); // ✅ Log output
+        console.log("STDERR:", stderr); // ✅ Log errors
+
         if (error) reject(stderr || error.message);
         else resolve(stdout);
       }
     );
 
-    if (input) process.stdin.write(input + "\n");
-    process.stdin.end();
+    if (input) {
+      process.stdin.write(input + "\n");
+      process.stdin.end();
+    }
   });
+
 
 app.post("/compile", async (req, res) => {
   const { language, code, input } = req.body;
