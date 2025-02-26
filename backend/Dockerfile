@@ -1,22 +1,19 @@
-# Use Node.js 18 as base image
+# Use Node.js 18 as the base image
 FROM node:18
 
-# Set the working directory inside the container
+# Set working directory inside the container
 WORKDIR /app
 
-# Install g++-12 and required dependencies
+# Install required dependencies
 RUN apt-get update && apt-get install -y g++-12 build-essential libstdc++-12-dev
 
-# Copy package.json and package-lock.json first to leverage Docker cache
-COPY backend/package.json backend/package-lock.json ./
+# Copy backend folder into the container
+COPY backend /app/
 
 # Install dependencies
 RUN npm install
 
-# Copy the rest of the backend code
-COPY backend/ .
-
-# Expose the port (optional, useful for local testing)
+# Expose port 5000
 EXPOSE 5000
 
 # Start the server
