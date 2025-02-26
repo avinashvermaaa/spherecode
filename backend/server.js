@@ -71,7 +71,6 @@ const executeCommand = (command, input = "") =>
     }
   });
 
-
 app.post("/compile", async (req, res) => {
   const { language, code, input } = req.body;
 
@@ -108,11 +107,19 @@ app.post("/compile", async (req, res) => {
       runCmd = runCmd.replace("{classname}", className);
     }
 
-    // Compile if necessary
-    if (compileCmd) await executeCommand(compileCmd);
+    // **Compile if necessary**
+    if (compileCmd) {
+      console.log("Compiling Code...");
+      await executeCommand(compileCmd).catch((err) => {
+        throw new Error(`❌ Compilation Error:\n${err}`);
+      });
+    }
 
-    // Run program (with input if applicable)
-    const executionResult = await executeCommand(runCmd, input);
+    // **Run program (with input if applicable)**
+    console.log("Executing Program...");
+    const executionResult = await executeCommand(runCmd, input).catch((err) => {
+      throw new Error(`❌ Runtime Error:\n${err}`);
+    });
 
     res.json({ output: executionResult || "No output" });
   } catch (error) {
@@ -123,4 +130,4 @@ app.post("/compile", async (req, res) => {
   }
 });
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
