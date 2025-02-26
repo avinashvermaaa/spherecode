@@ -13,29 +13,6 @@ app.use(express.json());
 const TEMP_DIR = path.join(__dirname, "temp");
 if (!fs.existsSync(TEMP_DIR)) fs.mkdirSync(TEMP_DIR);
 
-// ✅ Function to check g++ version
-const checkGppVersion = () => {
-  exec("g++ --version", (error, stdout, stderr) => {
-    console.log("🚀 G++ Version:\n", stdout || stderr);
-    if (error) console.error("⚠️ G++ Missing: Install Required");
-  });
-};
-
-// ✅ Check if <bits/stdc++.h> exists
-const checkBitsHeader = () => {
-  exec("find /usr/include -name 'bits/stdc++.h'", (error, stdout, stderr) => {
-    console.log("📂 bits/stdc++.h found at:\n", stdout || stderr);
-    if (!stdout)
-      console.warn(
-        "⚠️ bits/stdc++.h not found, consider using standard headers."
-      );
-  });
-};
-
-// Run these checks on startup
-checkGppVersion();
-checkBitsHeader();
-
 const languageConfigs = {
   cpp: {
     extension: "cpp",
