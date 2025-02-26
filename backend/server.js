@@ -7,7 +7,7 @@ const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors()); // Allow frontend to connect
+app.use(cors());
 app.use(express.json());
 
 const TEMP_DIR = path.join(__dirname, "temp");
@@ -18,12 +18,47 @@ const languageConfigs = {
     extension: "cpp",
     compile: "g++ {file} -o {outfile}",
     run: "{outfile}",
+    inputFlag: true,
   },
-  c: { extension: "c", compile: "gcc {file} -o {outfile}", run: "{outfile}" },
-  python: { extension: "py", run: "python3 {file}" },
-  java: { extension: "java", compile: "javac {file}", run: "java {classname}" },
-  javascript: { extension: "js", run: "node {file}" },
+  c: {
+    extension: "c",
+    compile: "gcc {file} -o {outfile}",
+    run: "{outfile}",
+    inputFlag: true,
+  },
+  python: {
+    extension: "py",
+    run: "python3 {file}",
+    inputFlag: true,
+  },
+  java: {
+    extension: "java",
+    compile: "javac {file}",
+    run: "java -cp {dir} {classname}",
+    inputFlag: true,
+  },
+  javascript: {
+    extension: "js",
+    run: "node {file}",
+    inputFlag: false,
+  },
 };
+
+// Utility function to execute a command
+const executeCommand = (command, input = "") =>
+  new Promise((resolve, reject) => {
+    const process = exec(
+      command,
+      { timeout: 5000 },
+      (error, stdout, stderr) => {
+        if (error) reject(stderr || error.message);
+        else resolve(stdout);
+      }
+    );
+
+    if (input) process.stdin.write(input + "\n");
+    process.stdin.end();
+  });
 
 app.post("/compile", async (req, res) => {
   const { language, code, input } = req.body;
@@ -38,7 +73,7 @@ app.post("/compile", async (req, res) => {
   const outputFile = path.join(TEMP_DIR, "output");
 
   try {
-    fs.writeFileSync(filepath, code); // Save code to a file
+    fs.writeFileSync(filepath, code);
 
     let compileCmd = languageConfigs[language].compile
       ? languageConfigs[language].compile
@@ -48,31 +83,31 @@ app.post("/compile", async (req, res) => {
 
     let runCmd = languageConfigs[language].run
       .replace("{file}", filepath)
-      .replace("{outfile}", outputFile);
+      .replace("{outfile}", outputFile)
+      .replace("{dir}", TEMP_DIR);
 
-    const executeCommand = (command) =>
-      new Promise((resolve, reject) => {
-        exec(command, { timeout: 5000 }, (error, stdout, stderr) => {
-          if (error) reject(stderr || error.message);
-          else resolve(stdout);
-        });
-      });
-
-    if (compileCmd) {
-      const compileResult = await executeCommand(compileCmd).catch((err) => {
-        throw new Error(`Compilation Error:\n${err}`);
-      });
+    // Special case for Java (Extract Class Name)
+    if (language === "java") {
+      const classNameMatch = code.match(/class\s+([A-Za-z_][A-Za-z0-9_]*)/);
+      if (!classNameMatch) {
+        throw new Error("Error: Java class name not found.");
+      }
+      const className = classNameMatch[1];
+      runCmd = runCmd.replace("{classname}", className);
     }
 
-    const executionResult = await executeCommand(runCmd).catch((err) => {
-      throw new Error(`Runtime Error:\n${err}`);
-    });
+    // Compile if necessary
+    if (compileCmd) await executeCommand(compileCmd);
+
+    // Run program (with input if applicable)
+    const executionResult = await executeCommand(runCmd, input);
 
     res.json({ output: executionResult || "No output" });
   } catch (error) {
     res.status(500).json({ output: error.message });
   } finally {
     if (fs.existsSync(filepath)) fs.unlinkSync(filepath);
+    if (fs.existsSync(outputFile)) fs.unlinkSync(outputFile);
   }
 });
 

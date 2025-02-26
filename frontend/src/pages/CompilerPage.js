@@ -2,27 +2,7 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import "./CompilerPage.css";
 
-const BACKEND_URL = ""; // Your deployed backend
-
-const runCode = async () => {
-  try {
-    const response = await fetch(`${BACKEND_URL}/compile`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ language, code, input }),
-    });
-
-    const data = await response.json();
-
-    if (response.ok) {
-      setOutput(data.output || "No output received");
-    } else {
-      setOutput(`Error: ${data.output || "Something went wrong"}`);
-    }
-  } catch (error) {
-    setOutput(`Error connecting to server: ${error.message}`);
-  }
-};
+const BACKEND_URL = "https://spherecode.onrender.com"; // Your deployed backend
 
 // Language/Framework/Database to extension mapping
 const languageExtensions = {
@@ -43,7 +23,7 @@ function CompilerPage() {
   const [output, setOutput] = useState("");
 
   // Determine the correct file extension for the language
-  const defaultExtension = languageExtensions[language.toLowerCase()] || "txt";
+  const defaultExtension = languageExtensions[language?.toLowerCase()] || "txt";
   const [fileName, setFileName] = useState(
     `${language}_code.${defaultExtension}`
   );
@@ -53,7 +33,7 @@ function CompilerPage() {
     setOutput("Running...");
 
     try {
-      const response = await fetch("${BACKEND_URL}/compile", {
+      const response = await fetch(`${BACKEND_URL}/compile`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ language, code, input }),
@@ -62,7 +42,7 @@ function CompilerPage() {
       const data = await response.json();
       setOutput(data.output || "Error: No output received.");
     } catch (error) {
-      setOutput("Error running code. Please try again.");
+      setOutput(`Error running code: ${error.message}`);
     }
   };
 
