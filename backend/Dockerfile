@@ -7,11 +7,14 @@ WORKDIR /app
 # Install required dependencies
 RUN apt-get update && apt-get install -y g++-12 build-essential libstdc++-12-dev
 
-# Copy backend files into the container
-COPY . .
+# Copy package.json and package-lock.json first (faster builds)
+COPY backend/package*.json ./
 
 # Install dependencies
 RUN npm install
+
+# Copy the rest of the backend files
+COPY backend/ .
 
 # Expose the port your server runs on
 EXPOSE 5000  
