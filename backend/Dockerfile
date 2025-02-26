@@ -1,5 +1,5 @@
-# Use Node.js 18 as the base image
-FROM node:18
+# Use Node.js 18 with Debian Bullseye as the base image
+FROM node:18-bullseye
 
 # Set working directory inside the container
 WORKDIR /app
@@ -7,11 +7,7 @@ WORKDIR /app
 # Update and install required dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
-    g++-13 gcc-13 libstdc++-13-dev
-
-# Set g++-13 as the default compiler
-RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100 && \
-    update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 100
+    g++ gcc libstdc++-dev
 
 # Copy package.json and package-lock.json first (for better caching)
 COPY backend/package*.json ./
