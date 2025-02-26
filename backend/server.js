@@ -52,15 +52,20 @@ const executeCommand = (command, input = "") =>
       command,
       { timeout: 5000 },
       (error, stdout, stderr) => {
-        console.log("STDOUT:", stdout); // ✅ Log output
-        console.log("STDERR:", stderr); // ✅ Log errors
+        console.log("STDOUT:", stdout); // ✅ Log standard output
+        console.log("STDERR:", stderr); // ✅ Log standard error
 
-        if (error) reject(stderr || error.message);
-        else resolve(stdout);
+        if (error) {
+          console.error("Execution Error:", error.message);
+          reject(stderr || error.message);
+        } else {
+          resolve(stdout);
+        }
       }
     );
 
     if (input) {
+      console.log("Passing Input:", input); // ✅ Log input being passed
       process.stdin.write(input + "\n");
       process.stdin.end();
     }
