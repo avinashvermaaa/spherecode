@@ -5,11 +5,10 @@ FROM node:18
 WORKDIR /app
 
 # Install required dependencies
-RUN apt-get update && apt-get install -y g++-12 build-essential libstdc++-12-dev
+RUN apt-get update && apt-get install -y g++ cmake build-essential software-properties-common
 
-# Set g++-12 as the default compiler
-RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 \
-    && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 100
+# Ensure g++ is available
+RUN g++ --version
 
 # Copy package.json and package-lock.json first (for better caching)
 COPY backend/package*.json ./
@@ -19,6 +18,9 @@ RUN npm install
 
 # Copy the rest of the backend files
 COPY backend/ .
+
+# Ensure the /app/temp directory exists for compiled files
+RUN mkdir -p /app/temp
 
 # Expose the port your server runs on
 EXPOSE 5000  
