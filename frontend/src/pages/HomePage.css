@@ -23,14 +23,14 @@
 }
 
 .search-bar {
-        margin-top: 20px;
-        padding: 18px;
-        font-size: 16px;
-        width: 50%;
-        border-radius: 8px;
-        border: 1px solid #ccc;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-        /* Add soft shadow */
+    margin-top: 20px;
+    padding: 18px;
+    font-size: 16px;
+    width: 50%;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    
 }
 
 /* Category button styling */
@@ -48,6 +48,7 @@
     border-radius: 5px;
     cursor: pointer;
     background-color: #f8f9fa;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 .category-button.active {
@@ -57,17 +58,17 @@
 
 /* Category box styling */
 .category-box {
-        margin: 20px auto;
-        padding: 20px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        width: 60%;
-        background-color: #f8f9fa;
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 15px;
-        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
-        /* Add shadow to the category box */
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 60%;
+    background-color: #f8f9fa;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, box-shadow 0.3s;
 }
 
 .language-item {
@@ -78,6 +79,7 @@
     cursor: pointer;
     background-color: white;
     text-align: center;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 .language-item:hover {
@@ -105,30 +107,47 @@
 .footer a:hover {
     text-decoration: underline;
 }
+
 /* Dark Mode Styles */
 body.dark-mode {
     background-color: #121212;
     color: white;
-    /* Change default text to white */
 }
 
-body.dark-mode .header h1 {
+body.dark-mode .header h1,
+body.dark-mode .header p {
     color: white;
-    /* Set the entire heading to white */
 }
 
 body.dark-mode .header .highlight {
     color: #1e90ff;
-    /* Keep "Code Sphere" blue */
 }
 
-body.dark-mode .header p {
-    color: white;
-    /* Ensure the subtitle is white */
-}
-/* Dark Mode Shadows */
+/* Dark Mode for Search Bar, Category Box, and Buttons */
 body.dark-mode .search-bar,
 body.dark-mode .category-box {
+    background-color: #1e1e1e;
+    border: 1px solid #444;
     box-shadow: 0px 4px 12px rgba(255, 255, 255, 0.2);
-    /* Lighter shadow for dark mode */
+}
+
+body.dark-mode .category-button {
+    background-color: #333;
+    color: white;
+    border: 1px solid #555;
+}
+
+body.dark-mode .category-button.active {
+    background-color: #1e90ff;
+}
+
+body.dark-mode .language-item {
+    background-color: #2b2b2b;
+    color: white;
+    border: 2px solid #444;
+}
+
+body.dark-mode .language-item:hover {
+    background-color: #1e90ff;
+    color: white;
 }

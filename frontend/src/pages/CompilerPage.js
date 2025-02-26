@@ -53,7 +53,7 @@ function CompilerPage() {
 return (
   <div className="compiler-page">
     <div className="header">
-      <h2>{language} Compiler</h2>
+      <h2>Codesphere:- {language} Compiler</h2>
       <div className="header-buttons-container">
         <div className="header-buttons">
           <button className="header-button" onClick={renameCode}>
@@ -66,7 +66,6 @@ return (
             Run Code
           </button>
         </div>
-        {/* <DarkModeToggle /> */}  
       </div>
     </div>
 
@@ -86,7 +85,7 @@ return (
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Enter input for your program..."
+            placeholder="Enter input for your Codes..."
           />
         </div>
 
