@@ -4,16 +4,17 @@ FROM node:18
 # Set working directory inside the container
 WORKDIR /app
 
-# Install required dependencies
-RUN apt-get update && apt-get install -y g++-14 build-essential libstdc++-14-dev
+# Update and install required dependencies
+RUN apt-get update && apt-get install -y software-properties-common
+
+# Add Ubuntu Toolchain PPA and install g++-14
+RUN add-apt-repository ppa:ubuntu-toolchain-r/test -y && \
+    apt-get update && \
+    apt-get install -y g++-14 gcc-14 build-essential libstdc++-14-dev
 
 # Set g++-14 as the default compiler
 RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-14 100 \
     && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-14 100
-
-# Manually add bits/stdc++.h if missing
-RUN mkdir -p /usr/include/x86_64-linux-gnu/c++/14/ \
-    && echo '#include <bits/stdc++.h>' > /usr/include/x86_64-linux-gnu/c++/14/bits/stdc++.h
 
 # Copy package.json and package-lock.json first (for better caching)
 COPY backend/package*.json ./
@@ -22,7 +23,7 @@ COPY backend/package*.json ./
 RUN npm install
 
 # Copy the rest of the backend files
-COPY backend/ .
+COPY backend/ ./
 
 # Ensure the /app/temp directory exists for compiled files
 RUN mkdir -p /app/temp
