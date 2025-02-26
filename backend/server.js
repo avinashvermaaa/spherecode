@@ -13,6 +13,29 @@ app.use(express.json());
 const TEMP_DIR = path.join(__dirname, "temp");
 if (!fs.existsSync(TEMP_DIR)) fs.mkdirSync(TEMP_DIR);
 
+// ✅ Function to check g++ version
+const checkGppVersion = () => {
+  exec("g++ --version", (error, stdout, stderr) => {
+    console.log("🚀 G++ Version:\n", stdout || stderr);
+    if (error) console.error("⚠️ G++ Missing: Install Required");
+  });
+};
+
+// ✅ Check if <bits/stdc++.h> exists
+const checkBitsHeader = () => {
+  exec("find /usr/include -name 'bits/stdc++.h'", (error, stdout, stderr) => {
+    console.log("📂 bits/stdc++.h found at:\n", stdout || stderr);
+    if (!stdout)
+      console.warn(
+        "⚠️ bits/stdc++.h not found, consider using standard headers."
+      );
+  });
+};
+
+// Run these checks on startup
+checkGppVersion();
+checkBitsHeader();
+
 const languageConfigs = {
   cpp: {
     extension: "cpp",
@@ -47,16 +70,16 @@ const languageConfigs = {
 // Utility function to execute a command
 const executeCommand = (command, input = "") =>
   new Promise((resolve, reject) => {
-    console.log(`Executing: ${command}`); // ✅ Log command execution
+    console.log(`🛠️ Executing: ${command}`); // ✅ Log command execution
     const process = exec(
       command,
       { timeout: 5000 },
       (error, stdout, stderr) => {
-        console.log("STDOUT:", stdout); // ✅ Log standard output
-        console.log("STDERR:", stderr); // ✅ Log standard error
+        console.log("📤 STDOUT:", stdout); // ✅ Log standard output
+        console.log("📥 STDERR:", stderr); // ✅ Log standard error
 
         if (error) {
-          console.error("Execution Error:", error.message);
+          console.error("❌ Execution Error:", error.message);
           reject(stderr || error.message);
         } else {
           resolve(stdout);
@@ -65,7 +88,7 @@ const executeCommand = (command, input = "") =>
     );
 
     if (input) {
-      console.log("Passing Input:", input); // ✅ Log input being passed
+      console.log("📌 Passing Input:", input); // ✅ Log input being passed
       process.stdin.write(input + "\n");
       process.stdin.end();
     }
@@ -75,7 +98,7 @@ app.post("/compile", async (req, res) => {
   const { language, code, input } = req.body;
 
   if (!languageConfigs[language]) {
-    return res.status(400).json({ output: "Error: Unsupported language" });
+    return res.status(400).json({ output: "❌ Error: Unsupported language" });
   }
 
   const ext = languageConfigs[language].extension;
@@ -97,26 +120,26 @@ app.post("/compile", async (req, res) => {
       .replace("{outfile}", outputFile)
       .replace("{dir}", TEMP_DIR);
 
-    // Special case for Java (Extract Class Name)
+    // 🔹 Special case for Java (Extract Class Name)
     if (language === "java") {
       const classNameMatch = code.match(/class\s+([A-Za-z_][A-Za-z0-9_]*)/);
       if (!classNameMatch) {
-        throw new Error("Error: Java class name not found.");
+        throw new Error("❌ Error: Java class name not found.");
       }
       const className = classNameMatch[1];
       runCmd = runCmd.replace("{classname}", className);
     }
 
-    // **Compile if necessary**
+    // 🔹 Compile if necessary
     if (compileCmd) {
-      console.log("Compiling Code...");
+      console.log("⏳ Compiling Code...");
       await executeCommand(compileCmd).catch((err) => {
         throw new Error(`❌ Compilation Error:\n${err}`);
       });
     }
 
-    // **Run program (with input if applicable)**
-    console.log("Executing Program...");
+    // 🔹 Run program (with input if applicable)
+    console.log("🚀 Executing Program...");
     const executionResult = await executeCommand(runCmd, input).catch((err) => {
       throw new Error(`❌ Runtime Error:\n${err}`);
     });
