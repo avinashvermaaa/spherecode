@@ -21,3 +21,6 @@ EXPOSE 5000
 
 # Start the Node.js server
 CMD ["node", "server.js"]
+
+
+# docker se workings
