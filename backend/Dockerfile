@@ -7,8 +7,11 @@ WORKDIR /app
 # Install required dependencies
 RUN apt-get update && apt-get install -y g++-12 build-essential libstdc++-12-dev
 
-# Copy backend folder into the container
-COPY backend /app/
+# Copy all files from the build context to the container
+COPY . .
+
+# Move into the backend folder (if applicable)
+WORKDIR /app/backend
 
 # Install dependencies
 RUN npm install
