@@ -5,10 +5,15 @@ FROM node:18
 WORKDIR /app
 
 # Install required dependencies
-RUN apt-get update && apt-get install -y g++ cmake build-essential software-properties-common
+RUN apt-get update && apt-get install -y g++-12 build-essential libstdc++-12-dev
 
-# Ensure g++ is available
-RUN g++ --version
+# Set g++-12 as the default compiler
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 \
+    && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 100
+
+# Manually add bits/stdc++.h if missing
+RUN mkdir -p /usr/include/x86_64-linux-gnu/c++/12/ \
+    && echo '#include <bits/stdc++.h>' > /usr/include/x86_64-linux-gnu/c++/12/bits/stdc++.h
 
 # Copy package.json and package-lock.json first (for better caching)
 COPY backend/package*.json ./
