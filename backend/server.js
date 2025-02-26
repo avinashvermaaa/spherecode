@@ -16,7 +16,7 @@ if (!fs.existsSync(TEMP_DIR)) fs.mkdirSync(TEMP_DIR);
 const languageConfigs = {
   cpp: {
     extension: "cpp",
-    compile: "g++ {file} -o {outfile}",
+    compile: "g++ -std=c++17 {file} -o {outfile}",
     run: "{outfile}",
     inputFlag: true,
   },
