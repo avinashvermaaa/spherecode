@@ -32,7 +32,7 @@
 }
 
 .compiler-page .header-button {
-    padding: 10px 25px;
+    padding: 10px 15px;
     /* Increased horizontal padding for better spacing */
     font-size: 16px;
     background-color: #007bff;
@@ -62,7 +62,7 @@
     width: 60%;
     display: flex;
     flex-direction: column;
-    height: 150%;
+    height: 110%;
 }
 
 textarea {
@@ -70,7 +70,6 @@ textarea {
     padding: 10px;
     border: 2px solid #007bff;
     box-shadow: 0 0 5px #007bff;
-    /* border: 1px solid #ccc; */
     border-radius: 5px;
     font-family: monospace;
     font-size: 16px;
@@ -80,7 +79,7 @@ textarea {
 textarea,
 .input-box textarea,
 .output-box textarea {
-    height: calc(65%);
+    height: calc(80%);
 }
 
 /* Dark mode styles */
@@ -93,8 +92,9 @@ textarea,
     box-shadow: 0 0 5px #007bff;
 }
 
-.input-output-section {
-    padding-right: 19px;
+/* .input-output-section { */
+.input-output-container {
+    padding-right: 1px;
     width: 30%;
     display: flex;
     flex-direction: column;
@@ -102,7 +102,12 @@ textarea,
     height: 100%;
 }
 
-.input-box,
+.input-box{
+    height: 85%;
+}
+    
 .output-box {
-    height: 90%;
+    margin-top: 12%;
+    height: 150%;
+    
 }
