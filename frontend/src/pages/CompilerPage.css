@@ -68,7 +68,9 @@
 textarea {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 2px solid #007bff;
+    box-shadow: 0 0 5px #007bff;
+    /* border: 1px solid #ccc; */
     border-radius: 5px;
     font-family: monospace;
     font-size: 16px;
@@ -79,6 +81,16 @@ textarea,
 .input-box textarea,
 .output-box textarea {
     height: calc(65%);
+}
+
+/* Dark mode styles */
+.dark-mode textarea,
+.dark-mode .input-box textarea,
+.dark-mode .output-box textarea {
+    background-color: #2c2c2c;
+    color: white;
+    border: 2px solid #007bff;
+    box-shadow: 0 0 5px #007bff;
 }
 
 .input-output-section {
