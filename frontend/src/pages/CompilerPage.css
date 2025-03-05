@@ -1,75 +1,77 @@
+/* Compiler Page Styling */
 .compiler-page {
     padding: 20px;
     text-align: center;
 }
 
+/* Header Section */
 .compiler-page .header {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Spreads items apart */
     align-items: center;
     margin-bottom: 20px;
-    flex-wrap: wrap;
-    /* Ensures responsiveness */
+    flex-wrap: wrap; /* Ensures responsiveness */
 }
 
+/* Header Title Styling */
 .compiler-page .header h2 {
-    flex-grow: 1;
+    flex-grow: 1; /* Allows title to expand */
     text-align: center;
     margin: 0;
 }
 
+/* Container for Header Buttons & Dark Mode Toggle */
 .compiler-page .header-buttons-container {
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
-    /* Allows wrapping for smaller screens */
+    flex-wrap: wrap; /* Wraps buttons on small screens */
     margin-right: 50px;
 }
 
+/* Header Buttons */
 .compiler-page .header-buttons {
     display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    /* Ensures flexibility */
+    gap: 10px; /* Space between buttons */
+    flex-wrap: wrap; /* Allows wrapping on smaller screens */
     margin-right: 0;
 }
 
+/* Individual Header Button */
 .compiler-page .header-button {
     padding: 10px 15px;
     font-size: 16px;
-    background-color: #007bff;
+    background-color: #007bff; /* Primary button color */
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    flex-shrink: 0;
-    /* Prevents buttons from shrinking */
+    flex-shrink: 0; /* Prevents shrinking */
 }
 
+/* Button Hover Effect */
 .compiler-page .header-button:hover {
     background-color: #0056b3;
 }
 
+/* Main Compiler Layout */
 .compiler-container {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    height: 82vh;
-    flex-wrap: wrap;
-    /* Allows elements to adjust dynamically */
+    height: 82vh; /* Fixed height */
+    flex-wrap: wrap; /* Ensures responsiveness */
 }
 
+/* Code Editor Styling */
 .code-editor {
     width: 62%;
     display: flex;
     flex-direction: column;
-    height: 100%;
-    min-height: 400px;
-    /* Ensures a reasonable minimum size */
-    /* flex-grow: 2s,mn; */
-    /* Allows expansion */
+    height: 82vh; /* Fixed height */
+    min-height: 400px; /* Ensures a minimum size */
 }
 
+/* Textarea (Code Editor, Input, and Output) */
 textarea {
     width: 100%;
     padding: 10px;
@@ -78,10 +80,11 @@ textarea {
     border-radius: 5px;
     font-family: monospace;
     font-size: 16px;
-    resize: none;
+    resize: none; /* Prevents resizing */
     min-height: 150px;
 }
 
+/* Ensuring Input and Output Boxes Have Fixed Heights */
 textarea,
 .input-box textarea,
 .output-box textarea {
@@ -89,7 +92,7 @@ textarea,
     min-height: 100px;
 }
 
-/* Dark mode styles */
+/* Dark Mode Styles */
 .dark-mode textarea,
 .dark-mode .input-box textarea,
 .dark-mode .output-box textarea {
@@ -99,32 +102,36 @@ textarea,
     box-shadow: 0 0 5px #007bff;
 }
 
+/* Input & Output Container */
 .input-output-container {
     width: 1%;
     display: flex;
     flex-direction: column;
     height: auto;
-    /* min-height: 300px; */
     flex-grow: 0.8;
 }
 
+/* Input & Output Boxes */
 .input-box,
 .output-box {
     flex-grow: 1;
     min-height: 100px;
 }
 
+/* Output Box Specific Styling */
 .output-box {
     height: 35vh;
 }
 
+/* Responsive Design for Small Screens */
 @media (max-width: 768px) {
     .compiler-container {
-        flex-direction: column;
+        flex-direction: column; /* Stack elements vertically */
         align-items: center;
         height: auto;
     }
 
+    /* Full width for smaller screens */
     .code-editor,
     .input-output-container {
         width: 100%;
