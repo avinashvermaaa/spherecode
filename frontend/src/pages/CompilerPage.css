@@ -8,6 +8,8 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    flex-wrap: wrap;
+    /* Ensures responsiveness */
 }
 
 .compiler-page .header h2 {
@@ -19,32 +21,29 @@
 .compiler-page .header-buttons-container {
     display: flex;
     align-items: center;
-    gap: 20px;
-    /* Gap between Dark Mode toggle and buttons */
+    flex-wrap: wrap;
+    /* Allows wrapping for smaller screens */
+    margin-right: 50px;
 }
 
 .compiler-page .header-buttons {
     display: flex;
     gap: 10px;
-    /* Space between each button */
-    margin-right: 35px;
-    /* Add more space between buttons and Dark Mode */
+    flex-wrap: wrap;
+    /* Ensures flexibility */
+    margin-right: 0;
 }
 
 .compiler-page .header-button {
     padding: 10px 15px;
-    /* Increased horizontal padding for better spacing */
     font-size: 16px;
     background-color: #007bff;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-}
-
-.compiler-page .header-button.run-button {
-    padding: 100px 300px;
-    /* Additional padding for the "Run Code" button */
+    flex-shrink: 0;
+    /* Prevents buttons from shrinking */
 }
 
 .compiler-page .header-button:hover {
@@ -55,14 +54,20 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    height: 80vh;
+    height: 82vh;
+    flex-wrap: wrap;
+    /* Allows elements to adjust dynamically */
 }
 
 .code-editor {
-    width: 60%;
+    width: 62%;
     display: flex;
     flex-direction: column;
-    height: 110%;
+    height: 100%;
+    min-height: 400px;
+    /* Ensures a reasonable minimum size */
+    /* flex-grow: 2s,mn; */
+    /* Allows expansion */
 }
 
 textarea {
@@ -73,13 +78,16 @@ textarea {
     border-radius: 5px;
     font-family: monospace;
     font-size: 16px;
-    resize: none;
+    resize: vertical;
+    /* Allows vertical resizing */
+    min-height: 150px;
 }
 
 textarea,
 .input-box textarea,
 .output-box textarea {
-    height: calc(80%);
+    height: 100%;
+    min-height: 100px;
 }
 
 /* Dark mode styles */
@@ -92,22 +100,35 @@ textarea,
     box-shadow: 0 0 5px #007bff;
 }
 
-/* .input-output-section { */
 .input-output-container {
-    padding-right: 1px;
-    width: 30%;
+    width: 1%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
+    /* justify-content: space-between; */
+    height: auto;
+    /* min-height: 300px; */
+    flex-grow: 0.8;
 }
 
-.input-box{
-    height: 85%;
-}
-    
+.input-box,
 .output-box {
-    margin-top: 12%;
-    height: 150%;
-    
+    flex-grow: 1;
+    min-height: 100px;
+}
+
+.output-box {
+    height: 35vh;
+}
+
+@media (max-width: 768px) {
+    .compiler-container {
+        flex-direction: column;
+        align-items: center;
+        height: auto;
+    }
+
+    .code-editor,
+    .input-output-container {
+        width: 100%;
+    }
 }
