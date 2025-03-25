@@ -13,23 +13,18 @@ import "./CompilerPage.css";
 const BACKEND_URL = "https://spherecode.onrender.com";
 
 const languageModes = {
-  cpp: cpp(),
-  python: python(),
-  java: java(),
-  javascript: javascript(),
-  sql: sql(),
-  php: php(),
+  cpp: cpp(), python: python(), java: java(), javascript: javascript(), sql: sql(), php: php(),
 };
 
 const languageExtensions = {
-  html: "html",
-  python: "py",
-  cpp: "cpp",
-  c: "c",
-  java: "java",
-  javascript: "js",
-  sql: "sql",
-  php: "php",
+  html: "html", python: "py", cpp: "cpp", c: "c", java: "java", javascript: "js", sql: "sql", php: "php",
+  assembly: "asm", "c#": "cs", lua: "lua", "sql": "sql", nodejs: "js", mongodb: "json", groovy: "groovy",
+  ruby: "rb", go: "go", scala: "scala", r: "r", perl: "pl", kotlin: "kt", pascal: "pas", cobol: "cbl",
+  fortran: "f", bash: "sh", clojure: "clj", typescript: "ts", prolog: "pl", rust: "rs", swift: "swift",
+  "objective-c": "m", coffeescript: "coffee", ejs: "ejs", materialize: "css", bootstrap: "css", jquery: "js",
+  css: "css", foundation: "css", bulma: "css", uikit: "css", "semantic ui": "css", skeleton: "css",
+  milligram: "css", react: "jsx", angular: "ts", vue: "vue", vue3: "vue", backbonejs: "js", oracle: "sql", 
+  postgresql: "sql", sqlite: "sql", redis: "rdb", mariadb: "sql", "sql server": "sql",
 };
 
 function CompilerPage() {

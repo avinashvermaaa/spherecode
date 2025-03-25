@@ -1,6 +1,6 @@
 {
   "name": "codespr",
-  "version": "0.1.0",
+  "version": "2.0.0",
   "private": true,
   "dependencies": {
     "@codemirror/lang-cpp": "^6.0.2",
