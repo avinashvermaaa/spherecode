@@ -69,6 +69,12 @@ function HomePage() {
 
   const languages = [
     {
+      category: "Working",
+      items: [
+        "Java", "C", "Python", "Cpp", "JavaScript", "PHP", "Rust",
+      ],
+    },
+    {
       category: "POPULAR",
       items: [
         "C", "Python", "Cpp", "Java", "MySQL", "HTML", "JavaScript", "TypeScript", "Perl", "Fortran", "PHP", "SQL",
