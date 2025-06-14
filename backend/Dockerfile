@@ -1,36 +1,51 @@
-# Use an official base image with build tools
 FROM ubuntu:22.04
 
-# Disable interactive prompts during package install
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install dependencies
+# Install core dependencies
 RUN apt-get update && apt-get install -y \
   build-essential \
   g++ \
   gcc \
   python3 \
-  nodejs \
-  npm \
-  openjdk-17-jdk \
+  python3-pip \
   curl \
   php \
-  golang-go \
-  rustc \
-  typescript \
+  openjdk-17-jdk \
+  software-properties-common \
+  git \
+  ca-certificates \
   && apt-get clean
 
-# Set up working directory
+# Install Node.js (v18 LTS) & npm
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get install -y nodejs
+
+# Install Go (official method)
+RUN curl -LO https://golang.org/dl/go1.21.5.linux-amd64.tar.gz && \
+    tar -C /usr/local -xzf go1.21.5.linux-amd64.tar.gz && \
+    ln -s /usr/local/go/bin/go /usr/bin/go && \
+    rm go1.21.5.linux-amd64.tar.gz
+
+# Install Rust
+RUN curl https://sh.rustup.rs -sSf | bash -s -- -y && \
+    ln -s /root/.cargo/bin/rustc /usr/bin/rustc && \
+    ln -s /root/.cargo/bin/cargo /usr/bin/cargo
+
+# Install TypeScript globally using npm
+RUN npm install -g typescript
+
+# Set working directory
 WORKDIR /app
 
-# Copy app files
+# Copy project files
 COPY . .
 
-# Install Node dependencies
+# Install project dependencies
 RUN npm install
 
-# Expose the port
+# Expose backend port
 EXPOSE 5000
 
-# Start the server
+# Start the backend server
 CMD ["node", "server.js"]
