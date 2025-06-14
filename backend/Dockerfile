@@ -15,7 +15,9 @@ RUN apt-get update && apt-get install -y \
   openjdk-17-jdk \
   software-properties-common \
   git \
-  ca-certificates
+  ca-certificates \
+  wget \
+  unzip
 
 # ✅ Install Node.js v18 and npm
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
@@ -25,6 +27,10 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
 RUN curl -LO https://golang.org/dl/go1.21.5.linux-amd64.tar.gz && \
   tar -C /usr/local -xzf go1.21.5.linux-amd64.tar.gz && \
   rm go1.21.5.linux-amd64.tar.gz
+
+# ✅ Set Go environment variables
+ENV GOPATH=/go
+ENV PATH=$PATH:$GOPATH/bin
 
 # ✅ Install Rust
 RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
@@ -38,9 +44,14 @@ WORKDIR /app
 # Copy project files
 COPY . .
 
-# Install dependencies
+# Install Node.js dependencies
 RUN npm install
 
+# Install Go dependencies (if needed, for example if you have a `go.mod` file)
+# RUN go mod tidy
+
+# Expose port for the app (5000 is common for Node.js apps)
 EXPOSE 5000
 
+# Command to run the Node.js server
 CMD ["node", "server.js"]
