@@ -20,13 +20,17 @@ RUN apt-get update && apt-get install -y \
     rm go1.18.10.linux-amd64.tar.gz && \
     echo "export PATH=$PATH:/usr/local/go/bin" >> ~/.bashrc && \
     source ~/.bashrc && \
-    # Install Rust (via rustup)
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh && \
+    # Install Rust via rustup
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
+    # Ensure Rust binaries are added to the path
+    echo "export PATH=$HOME/.cargo/bin:$PATH" >> ~/.bashrc && \
     # Install PHP
     curl -sL https://deb.nodesource.com/setup_16.x | bash && \
     apt-get install -y php-cli && \
-    # Install TypeScript
-    npm install -g typescript
+    # Install TypeScript globally
+    npm install -g typescript && \
+    # Ensure global npm binaries are in the PATH
+    echo "export PATH=$PATH:/usr/local/bin" >> ~/.bashrc
 
 # Copy the backend folder into the container
 COPY ./backend /app/
