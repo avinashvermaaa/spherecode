@@ -27,7 +27,7 @@ import { rust } from '@codemirror/lang-rust';
 // import { darcula } from "@uiw/codemirror-theme-darcula"; 
 import { monokai } from '@uiw/codemirror-theme-monokai';
 import "./CompilerPage.css";
-import Chatbot from "./Chatbot"; // 👈 Add this line
+import Chatbot from "./Chatbot"; // OpenAi Chatgpt integrate
 
 const BACKEND_URL = "https://spherecode.onrender.com";
 
@@ -137,7 +137,7 @@ function CompilerPage() {
         </div>
       </div>
 
-      <Chatbot /> {/* 👈 Add the chatbot at the bottom-right */}
+      <Chatbot /> {/*  Added the chatbot at the bottom-right */}
     </div>
   );
 }

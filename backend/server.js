@@ -128,6 +128,7 @@ app.post("/compile", async (req, res) => {
 });
 
 // Already discussed in last message
+/*
 app.post("/chat", async (req, res) => {
   const userMessage = req.body.message;
 
@@ -148,6 +149,6 @@ app.post("/chat", async (req, res) => {
   }
 });
 
-
+*/
 
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

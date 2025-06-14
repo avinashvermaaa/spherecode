@@ -141,7 +141,7 @@ function HomePage() {
             className={`category-button ${
               selectedCategory === category.category ? "active" : ""
             }`}
-            onClick={() => setSelectedCategory(category.category)} // category son't collapse on double click
+            onClick={() => setSelectedCategory(category.category)} // category shouldn't collapse on double click
           >
             {category.category}
           </button>
