@@ -3,7 +3,7 @@ FROM ubuntu:22.04
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PATH="/usr/local/go/bin:/root/.cargo/bin:$PATH"
 
-# Install core dependencies
+# Core dependencies
 RUN apt-get update && apt-get install -y \
   build-essential \
   g++ \
@@ -15,33 +15,32 @@ RUN apt-get update && apt-get install -y \
   openjdk-17-jdk \
   software-properties-common \
   git \
-  ca-certificates \
-  nodejs \
-  npm \
-  && apt-get clean
+  ca-certificates
 
-# Install Go (v1.21.5)
+# ✅ Install Node.js v18 and npm
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get install -y nodejs
+
+# ✅ Install Go
 RUN curl -LO https://golang.org/dl/go1.21.5.linux-amd64.tar.gz && \
   tar -C /usr/local -xzf go1.21.5.linux-amd64.tar.gz && \
   rm go1.21.5.linux-amd64.tar.gz
 
-# Install Rust
+# ✅ Install Rust
 RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
 
-# Install TypeScript globally
+# ✅ Install TypeScript
 RUN npm install -g typescript
 
-# Set working directory to backend folder
+# Set working directory
 WORKDIR /app
 
-# Copy only backend folder
+# Copy project files
 COPY . .
 
-# Install backend dependencies
+# Install dependencies
 RUN npm install
 
-# Expose backend port
 EXPOSE 5000
 
-# Start backend server
 CMD ["node", "server.js"]
