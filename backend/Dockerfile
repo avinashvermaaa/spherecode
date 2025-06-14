@@ -28,8 +28,8 @@ RUN apt-get update && apt-get install -y \
     # Install TypeScript
     npm install -g typescript
 
-# Copy backend folder into the container
-COPY backend /app/
+# Copy the backend folder into the container
+COPY ./backend /app/
 
 # Install backend dependencies (Node.js dependencies)
 RUN npm install
