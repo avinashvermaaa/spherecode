@@ -50,7 +50,30 @@ const languageConfigs = {
     run: "node {file}",
     inputFlag: false,
   },
+  go: {
+    extension: "go",
+    run: "go run {file}",
+    inputFlag: true,
+  },
+  rust: {
+    extension: "rs",
+    compile: "rustc {file} -o {outfile}",
+    run: "{outfile}",
+    inputFlag: true,
+  },
+  php: {
+    extension: "php",
+    run: "php {file}",
+    inputFlag: true,
+  },
+  typescript: {
+    extension: "ts",
+    compile: "tsc {file} --outDir {dir}",
+    run: "node {dir}/{file}.js",
+    inputFlag: true,
+  },
 };
+
 
 // Utility function to execute a command
 const executeCommand = (command, input = "") =>
