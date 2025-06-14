@@ -69,7 +69,7 @@ const languageConfigs = {
   typescript: {
     extension: "ts",
     compile: "tsc {file} --outDir {dir}",
-    run: "node {dir}/{file}.js",
+    run: "node {dir}/temp_code.js",
     inputFlag: true,
   },
 };
