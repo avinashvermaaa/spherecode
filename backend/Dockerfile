@@ -35,7 +35,7 @@ RUN npm install -g typescript
 WORKDIR /app/backend
 
 # Copy only backend folder
-COPY backend/ .
+COPY . .
 
 # Install backend dependencies
 RUN npm install
