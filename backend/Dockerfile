@@ -32,7 +32,7 @@ RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
 RUN npm install -g typescript
 
 # Set working directory to backend folder
-WORKDIR /app/backend
+WORKDIR /app
 
 # Copy only backend folder
 COPY . .
