@@ -63,10 +63,11 @@ const languageConfigs = {
   },
 typescript: {
   extension: "ts",
-  compile: "tsc {file} --outDir {dir}",
-  run: "node {dir}/temp_code.js", // ✅ Explicit .js extension
+  compile: "tsc --project tsconfig.json",
+  run: "node out/temp_code.js",
   inputFlag: true,
 },
+
 go: {
   extension: "go",
   run: "cd {dir} && go run temp_code.go", // ✅ No full path after cd
