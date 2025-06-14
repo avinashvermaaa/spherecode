@@ -50,11 +50,6 @@ const languageConfigs = {
     run: "node {file}",
     inputFlag: false,
   },
-  go: {
-    extension: "go",
-    run: "go run {file}",
-    inputFlag: true,
-  },
   rust: {
     extension: "rs",
     compile: "rustc {file} -o {outfile}",
@@ -70,6 +65,11 @@ const languageConfigs = {
     extension: "ts",
     compile: "tsc {file} --outDir {dir}",
     run: "node {dir}/temp_code.js",
+    inputFlag: true,
+  },
+  go: {
+    extension: "go",
+    run: "cd {dir} && go run {file}",
     inputFlag: true,
   },
 };
