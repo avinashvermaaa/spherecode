@@ -1,19 +1,40 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import CodeMirror from "@uiw/react-codemirror";
+
+//  Language Imports
 import { cpp } from "@codemirror/lang-cpp";
-import { python } from "@codemirror/lang-python";
 import { java } from "@codemirror/lang-java";
+import { python } from "@codemirror/lang-python";
+
+import { html } from '@codemirror/lang-html';
+import { css } from '@codemirror/lang-css';
 import { javascript } from "@codemirror/lang-javascript";
+import { json } from '@codemirror/lang-json';
+import { xml } from '@codemirror/lang-xml';
+import { angular } from '@codemirror/lang-angular'; 
+import { vue } from '@codemirror/lang-vue'; 
+
 import { sql } from "@codemirror/lang-sql";
+import { markdown } from '@codemirror/lang-markdown';
+import { yaml } from '@codemirror/lang-yaml';
+import { go } from '@codemirror/lang-go';
 import { php } from "@codemirror/lang-php";
-import { dracula } from "@uiw/codemirror-theme-dracula";
+import { rust } from '@codemirror/lang-rust';
+
+// Theme
+// import { dracula } from "@uiw/codemirror-theme-dracula"; // old dracula theme
+// import { darcula } from "@uiw/codemirror-theme-darcula"; 
+import { monokai } from '@uiw/codemirror-theme-monokai';
 import "./CompilerPage.css";
+import Chatbot from "./Chatbot"; // 👈 Add this line
 
 const BACKEND_URL = "https://spherecode.onrender.com";
 
 const languageModes = {
-  cpp: cpp(), python: python(), java: java(), javascript: javascript(), sql: sql(), php: php(),
+  cpp: cpp(), python: python(), java: java(), javascript: javascript(), html: html(), css: css(), json: json(),
+  xml: xml(), sql: sql(), markdown: markdown(), yaml: yaml(), go: go(), php: php(), rust: rust(), vue: vue(),
+  angular: angular(),
 };
 
 const languageExtensions = {
@@ -23,7 +44,7 @@ const languageExtensions = {
   fortran: "f", bash: "sh", clojure: "clj", typescript: "ts", prolog: "pl", rust: "rs", swift: "swift",
   "objective-c": "m", coffeescript: "coffee", ejs: "ejs", materialize: "css", bootstrap: "css", jquery: "js",
   css: "css", foundation: "css", bulma: "css", uikit: "css", "semantic ui": "css", skeleton: "css",
-  milligram: "css", react: "jsx", angular: "ts", vue: "vue", vue3: "vue", backbonejs: "js", oracle: "sql", 
+  milligram: "css", react: "jsx", angular: "ts", vue: "vue", vue3: "vue", backbonejs: "js", oracle: "sql",
   postgresql: "sql", sqlite: "sql", redis: "rdb", mariadb: "sql", "sql server": "sql",
 };
 
@@ -34,9 +55,7 @@ function CompilerPage() {
   const [output, setOutput] = useState("");
 
   const defaultExtension = languageExtensions[language?.toLowerCase()] || "txt";
-  const [fileName, setFileName] = useState(
-    `${language}_code.${defaultExtension}`
-  );
+  const [fileName, setFileName] = useState(`${language}_code.${defaultExtension}`);
   const languageMode = languageModes[language?.toLowerCase()] || cpp();
 
   const runCode = async () => {
@@ -74,15 +93,9 @@ function CompilerPage() {
       <div className="header">
         <h2>CodeSphere: {language} Compiler</h2>
         <div className="header-buttons">
-          <button className="header-button" onClick={renameCode}>
-            Rename
-          </button>
-          <button className="header-button" onClick={downloadCode}>
-            Download
-          </button>
-          <button className="header-button" onClick={runCode}>
-            Run Code
-          </button>
+          <button className="header-button" onClick={renameCode}>Rename</button>
+          <button className="header-button" onClick={downloadCode}>Download</button>
+          <button className="header-button" onClick={runCode}>Run Code</button>
         </div>
       </div>
 
@@ -94,11 +107,11 @@ function CompilerPage() {
             onChange={(value) => setCode(value)}
             placeholder={`Write your ${language} code here...`}
             className="code-mirror"
-            theme={dracula}
+            theme={monokai}
             extensions={[languageMode]}
             style={{
-              height: "100%", // Ensures it fills the editor area
-              overflow: "auto", // Enables scrollbar for overflow content
+              height: "100%",
+              overflow: "auto",
             }}
           />
         </div>
@@ -123,6 +136,8 @@ function CompilerPage() {
           </div>
         </div>
       </div>
+
+      <Chatbot /> {/* 👈 Add the chatbot at the bottom-right */}
     </div>
   );
 }
