@@ -29,7 +29,7 @@ import { monokai } from '@uiw/codemirror-theme-monokai';
 import "./CompilerPage.css";
 import Chatbot from "./Chatbot"; // OpenAi Chatgpt integrate
 
-const BACKEND_URL = "https://spherecode.onrender.com";
+const BACKEND_URL = "https://spherecodes.onrender.com";
 
 const languageModes = {
   cpp: cpp(), python: python(), java: java(), javascript: javascript(), html: html(), css: css(), json: json(),
