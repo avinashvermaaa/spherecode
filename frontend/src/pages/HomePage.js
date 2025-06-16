@@ -106,7 +106,7 @@ function HomePage() {
     },
   ];
 
-  const [selectedCategory, setSelectedCategory] = useState("POPULAR");
+  const [selectedCategory, setSelectedCategory] = useState("Working");
   const [searchQuery, setSearchQuery] = useState("");
 
   const openCompiler = (language) => {
@@ -179,7 +179,7 @@ function HomePage() {
             <Icon
               style={{
                 ...styles.icon,
-                color: hoveredIcon === index ? "#ffcc00" : "white",
+                color: hoveredIcon === index ? "red" : "#007bff",
               }}
             />
           </a>
@@ -195,10 +195,10 @@ const styles = {
     justifyContent: "center",
     gap: "20px",
     padding: "20px",
-    backgroundColor: "#007bff",
+    backgroundColor: "transparent",
   },
   icon: {
-    fontSize: "24px",
+    fontSize: "36px",
     color: "white",
     transition: "color 0.3s",
     cursor: "pointer",
