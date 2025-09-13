@@ -73,6 +73,36 @@ go: {
   run: "cd {dir} && go run temp_code.go", // ✅ No full path after cd
   inputFlag: true,
 },
+
+// R Language Support (with fallback for testing)
+r: {
+  extension: "r",
+  run: process.platform === "win32" ? "echo R code would execute here && type {file}" : "Rscript {file}",
+  inputFlag: false, // R typically reads from files rather than stdin
+  testMode: process.platform === "win32", // Flag to indicate test mode
+},
+
+// SQL Support (with fallback for testing)
+sql: {
+  extension: "sql",
+  run: process.platform === "win32" ? "echo SQL code would execute here && type {file}" : "sqlite3 -init {file} :memory: '.quit'",
+  inputFlag: false,
+  testMode: process.platform === "win32", // Flag to indicate test mode
+},
+
+// SQL Support for PostgreSQL (alternative)
+postgresql: {
+  extension: "sql",
+  run: "psql -f {file} -t -A",
+  inputFlag: false,
+},
+
+// SQL Support for MySQL (alternative)
+mysql: {
+  extension: "sql",
+  run: "mysql -t < {file}",
+  inputFlag: false,
+},
 };
 
 
@@ -130,6 +160,27 @@ app.post("/compile", async (req, res) => {
       runCmd = runCmd.replace("{classname}", className);
     }
 
+    // Special handling for SQL languages
+    if (["sql", "postgresql", "mysql"].includes(language)) {
+      // For SQL, we might want to create sample data or handle specific SQL commands
+      if (language === "sql") {
+        // SQLite specific setup - add some sample data if needed
+        const setupCmd = `echo "CREATE TABLE IF NOT EXISTS test_table (id INTEGER PRIMARY KEY, name TEXT);" | sqlite3 ${path.join(TEMP_DIR, "temp.db")}`;
+        try {
+          await executeCommand(setupCmd);
+          runCmd = runCmd.replace(":memory:", `${path.join(TEMP_DIR, "temp.db")}`);
+        } catch (err) {
+          console.warn("SQLite setup warning:", err);
+        }
+      }
+    }
+
+    // Special handling for R language
+    if (language === "r") {
+      // R scripts might need specific working directory or package loading
+      runCmd = `cd ${TEMP_DIR} && ` + runCmd;
+    }
+
     if (compileCmd) {
       console.log("⏳ Compiling Code...");
       await executeCommand(compileCmd).catch((err) => {
@@ -138,6 +189,12 @@ app.post("/compile", async (req, res) => {
     }
 
     console.log("🚀 Executing Program...");
+    
+    // Add test mode info for Windows
+    if (languageConfigs[language].testMode) {
+      console.log(`⚠️ Running in test mode for ${language} on Windows`);
+    }
+    
     const executionResult = await executeCommand(runCmd, input).catch((err) => {
       throw new Error(`❌ Runtime Error:\n${err}`);
     });
@@ -146,8 +203,22 @@ app.post("/compile", async (req, res) => {
   } catch (error) {
     res.status(500).json({ output: error.message });
   } finally {
+    // Clean up temporary files
     if (fs.existsSync(filepath)) fs.unlinkSync(filepath);
     if (fs.existsSync(outputFile)) fs.unlinkSync(outputFile);
+    
+    // Clean up SQL database files
+    const dbFile = path.join(TEMP_DIR, "temp.db");
+    if (fs.existsSync(dbFile)) fs.unlinkSync(dbFile);
+    
+    // Clean up any R-generated files (plots, outputs, etc.)
+    const rFiles = fs.readdirSync(TEMP_DIR).filter(file => 
+      file.startsWith("Rplot") || file.endsWith(".Rdata") || file.endsWith(".RData")
+    );
+    rFiles.forEach(file => {
+      const fullPath = path.join(TEMP_DIR, file);
+      if (fs.existsSync(fullPath)) fs.unlinkSync(fullPath);
+    });
   }
 });
 

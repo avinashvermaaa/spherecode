@@ -38,6 +38,15 @@ RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
 # ✅ Install TypeScript
 RUN npm install -g typescript
 
+# ✅ Install R
+RUN apt-get update && apt-get install -y r-base r-base-dev
+
+# ✅ Install SQL databases
+RUN apt-get install -y sqlite3 postgresql-client mysql-client
+
+# ✅ Install common R packages
+RUN R -e "install.packages(c('data.table', 'dplyr', 'ggplot2'), repos='https://cran.rstudio.com/')"
+
 # Set working directory
 WORKDIR /app
 
