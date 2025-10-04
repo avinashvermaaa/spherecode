@@ -1,2 +1,2 @@
 # spherecode
-* Website :- https://codespr.netlify.app/
+* Website :- https://spherecode.netlify.app/
